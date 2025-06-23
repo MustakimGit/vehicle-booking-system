@@ -41,3 +41,12 @@ db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
 module.exports = db;
+
+db.User.hasMany(db.Booking, { foreignKey: 'user_id' });
+db.Booking.belongsTo(db.User, { foreignKey: 'user_id' });
+
+db.Vehicle.hasMany(db.Booking, { foreignKey: 'vehicle_id' });
+db.Booking.belongsTo(db.Vehicle, { foreignKey: 'vehicle_id' });
+
+db.VehicleType.hasMany(db.Vehicle, { foreignKey: 'vehicle_type_id' });
+db.Vehicle.belongsTo(db.VehicleType, { foreignKey: 'vehicle_type_id' });
