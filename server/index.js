@@ -21,11 +21,15 @@ app.get('/', (req, res) => {
 //  Get Vehicle Types 
 app.get('/vehicle-types', async (req, res) => {
   try {
-    const { wheels } = req.query;
-    const types = await db.VehicleType.findAll({
-      where: wheels ? { wheels } : {}
-    });
-    res.json(types);
+    debugger
+    const wheels = parseInt(req.query.wheels); // ensure it's a number
+    console.log('Wheels filter value:', wheels); // debug log
+
+    const whereClause = !isNaN(wheels) ? { wheels } : {};
+    const vehicleTypes = await db.VehicleType.findAll({ where: whereClause });
+
+    console.log('Query result:', vehicleTypes); // debug
+    res.json(vehicleTypes);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Failed to fetch vehicle types' });

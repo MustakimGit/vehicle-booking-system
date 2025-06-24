@@ -3,10 +3,17 @@ const { Op } = require('sequelize');
 
 exports.getVehicleTypes = async (req, res) => {
   try {
-    const wheels = req.query.wheels; // 2 or 4
+    debugger
+    const wheels = parseInt(req.query.wheels, 10);
+    console.log('Query param wheels:', req.query.wheels, 'Parsed wheels:', wheels);
+    if (isNaN(wheels)) {
+      return res.status(400).json({ error: 'Invalid wheels parameter' });
+    }
     const types = await VehicleType.findAll({ where: { wheels } });
+    console.log('VehicleTypes found:', types);
     res.json(types);
   } catch (err) {
+    console.error(err);
     res.status(500).json({ error: 'Failed to fetch vehicle types' });
   }
 };
