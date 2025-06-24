@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { RadioGroup, Radio, FormControlLabel, Typography, Button, Box, FormHelperText } from '@mui/material';
+import { RadioGroup, Radio, FormControlLabel, Typography, Button, Box, FormHelperText,Grid,Paper } from '@mui/material';
 
 const Step4_Model = ({ nextStep, prevStep, updateData, data }) => {
   const [models, setModels] = useState([]);
@@ -16,6 +16,8 @@ const Step4_Model = ({ nextStep, prevStep, updateData, data }) => {
   }, [data.vehicle_type_id]);
 
   const handleNext = () => {
+
+    debugger
     if (selectedModel) {
       updateData({ vehicle_id: selectedModel });
       nextStep();
@@ -25,6 +27,9 @@ const Step4_Model = ({ nextStep, prevStep, updateData, data }) => {
   };
 
   return (
+    <Grid container justifyContent="center" mt={8}>
+      <Grid item xs={11} sm={8} md={6} lg={4}>
+        <Paper elevation={3} sx={{ padding: 4, borderRadius: 3 }}>
     <Box p={3}>
       <Typography variant="h6" mb={2}>Select Specific Vehicle Model</Typography>
       <RadioGroup
@@ -49,7 +54,9 @@ const Step4_Model = ({ nextStep, prevStep, updateData, data }) => {
         <Button onClick={prevStep} sx={{ mr: 2 }}>Back</Button>
         <Button variant="contained" onClick={handleNext}>Next</Button>
       </Box>
-    </Box>
+    </Box></Paper>
+      </Grid>
+    </Grid>
   );
 };
 

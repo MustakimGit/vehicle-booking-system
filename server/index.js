@@ -22,13 +22,10 @@ app.get('/', (req, res) => {
 app.get('/vehicle-types', async (req, res) => {
   try {
     debugger
-    const wheels = parseInt(req.query.wheels); // ensure it's a number
-    console.log('Wheels filter value:', wheels); // debug log
+    const wheels = parseInt(req.query.wheels); 
 
     const whereClause = !isNaN(wheels) ? { wheels } : {};
     const vehicleTypes = await db.VehicleType.findAll({ where: whereClause });
-
-    console.log('Query result:', vehicleTypes); // debug
     res.json(vehicleTypes);
   } catch (error) {
     console.error(error);
@@ -54,6 +51,7 @@ app.post('/book', async (req, res) => {
   const { first_name, last_name, vehicle_id, start_date, end_date } = req.body;
 
   try {
+    debugger
     // Check overlapping booking
     const conflict = await db.Booking.findOne({
       where: {

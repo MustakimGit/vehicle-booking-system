@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Radio, RadioGroup, FormControlLabel, Button, Box, Typography, FormHelperText } from '@mui/material';
+import { Radio, RadioGroup, FormControlLabel, Button, Box, Typography, FormHelperText,Grid,Paper } from '@mui/material';
 
 const Step2_Wheels = ({ nextStep, prevStep, updateData, data }) => {
   const [wheels, setWheels] = useState(data.wheels || '');
@@ -15,6 +15,9 @@ const Step2_Wheels = ({ nextStep, prevStep, updateData, data }) => {
   };
 
   return (
+    <Grid container justifyContent="center" mt={8}>
+          <Grid item xs={11} sm={8} md={6} lg={4}>
+            <Paper elevation={3} sx={{ padding: 4, borderRadius: 3 }}>
     <Box p={3}>
       <Typography variant="h6" mb={2}>Number of wheels</Typography>
       <RadioGroup
@@ -34,6 +37,9 @@ const Step2_Wheels = ({ nextStep, prevStep, updateData, data }) => {
         <Button variant="contained" onClick={handleNext}>Next</Button>
       </Box>
     </Box>
+    </Paper>
+          </Grid>
+        </Grid>
   );
 };
 

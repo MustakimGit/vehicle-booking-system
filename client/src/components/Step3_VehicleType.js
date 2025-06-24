@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { RadioGroup, Radio, FormControlLabel, Typography, Button, Box, FormHelperText } from '@mui/material';
+import { RadioGroup, Radio, FormControlLabel, Typography, Button, Box, FormHelperText,Grid,Paper} from '@mui/material';
 
 const Step3_VehicleType = ({ nextStep, prevStep, updateData, data }) => {
   const [types, setTypes] = useState([]);
@@ -13,11 +13,10 @@ const Step3_VehicleType = ({ nextStep, prevStep, updateData, data }) => {
       try {
         debugger
         var wheelValue= parseInt(data.wheels);
-        console.log("Fetching vehicle types for wheels:", wheelValue); // 👈 Debug log
+      
         const response = await axios.get(`http://localhost:5000/vehicle-types?wheels=${wheelValue}`);
-        const vehicleTypes = response.data;  // 👈 Assigned to a variable
-        console.log("Fetched vehicle types:", vehicleTypes); // 👈 Inspect response
-        setTypes(vehicleTypes); // 👈 Set in state
+        const vehicleTypes = response.data; 
+        setTypes(vehicleTypes); 
       } catch (err) {
         console.error("Error fetching vehicle types:", err);
       }
@@ -37,6 +36,9 @@ const Step3_VehicleType = ({ nextStep, prevStep, updateData, data }) => {
   };
 
   return (
+     <Grid container justifyContent="center" mt={8}>
+          <Grid item xs={11} sm={8} md={6} lg={4}>
+            <Paper elevation={3} sx={{ padding: 4, borderRadius: 3 }}>
     <Box p={3}>
       <Typography variant="h6" mb={2}>Select Vehicle Type</Typography>
       <RadioGroup
@@ -61,7 +63,9 @@ const Step3_VehicleType = ({ nextStep, prevStep, updateData, data }) => {
         <Button onClick={prevStep} sx={{ mr: 2 }}>Back</Button>
         <Button variant="contained" onClick={handleNext}>Next</Button>
       </Box>
-    </Box>
+    </Box></Paper>
+     </Grid>
+        </Grid>
   );
 };
 

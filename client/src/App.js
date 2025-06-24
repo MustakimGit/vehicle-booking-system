@@ -5,6 +5,7 @@ import Step3_VehicleType from './components/Step3_VehicleType';
 import Step4_Model from './components/Step4_Model';
 import Step5_DateRange from './components/Step5_DateRange';
 import axios from 'axios';
+import './styles/styles.css';
 import { useEffect } from 'react';
 
 const App = () => {
@@ -26,9 +27,7 @@ const App = () => {
   const updateData = (input) => {
     setFormData(prev => ({ ...prev, ...input }));
   };
-useEffect(()=>{
-  console.log("data",formData)
-},[formData])
+
   const handleSubmit = async () => {
     try {
       await axios.post('http://localhost:5000/book', formData);

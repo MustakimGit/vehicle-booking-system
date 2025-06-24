@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TextField, Button, Box, Typography } from '@mui/material';
+import { TextField, Button, Box, Typography , Grid,Paper} from '@mui/material';
 
 const Step1_Name = ({ nextStep, updateData, data }) => {
   const [firstName, setFirstName] = useState(data.first_name);
@@ -26,7 +26,7 @@ const Step1_Name = ({ nextStep, updateData, data }) => {
     }
 
     if (hasError) {
-      setGeneralError('❌ You can’t proceed unless you provide both first and last names.');
+      setGeneralError('❌ You can’t proceed unless you provide both first and last name.');
     } else {
       setGeneralError('');
       updateData({ first_name: firstName, last_name: lastName });
@@ -35,14 +35,17 @@ const Step1_Name = ({ nextStep, updateData, data }) => {
   };
 
   return (
-    <Box p={3}>
-      <Typography variant="h6" mb={2}>What is your name?</Typography>
+    <Grid container justifyContent="center" mt={8}>
+          <Grid item xs={11} sm={8} md={6} lg={4}>
+            <Paper elevation={3} sx={{ padding: 4, borderRadius: 3 }}>
+              <Box p={3}>
+                <Typography variant="h6" mb={2}>What is your name?</Typography>
 
       <TextField
         label="First Name"
         fullWidth
         value={firstName}
-        onChange={(e) => setFirstName(e.target.value)}
+        onChange={(e) => {setFirstName(e.target.value);setErrorFirstName('');setGeneralError('')}}
         helperText={errorFirstName}
         error={!!errorFirstName}
         sx={{ mb: 2 }}
@@ -52,7 +55,7 @@ const Step1_Name = ({ nextStep, updateData, data }) => {
         label="Last Name"
         fullWidth
         value={lastName}
-        onChange={(e) => setLastName(e.target.value)}
+        onChange={(e) => {setLastName(e.target.value);setErrorLastName('');setGeneralError('')}}
         helperText={errorLastName}
         error={!!errorLastName}
         sx={{ mb: 2 }}
@@ -66,6 +69,9 @@ const Step1_Name = ({ nextStep, updateData, data }) => {
 
       <Button variant="contained" onClick={handleNext}>Next</Button>
     </Box>
+     </Paper>
+          </Grid>
+        </Grid>
   );
 };
 

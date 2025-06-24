@@ -2,7 +2,14 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { Box, Typography, Button, FormHelperText } from '@mui/material';
+import {
+  Box,
+  Typography,
+  Button,
+  FormHelperText,
+  Paper,
+  Grid,
+} from '@mui/material';
 
 const Step5_DateSubmit = ({ data, prevStep, resetForm }) => {
   const [startDate, setStartDate] = useState(null);
@@ -18,59 +25,86 @@ const Step5_DateSubmit = ({ data, prevStep, resetForm }) => {
 
     setError('');
     setSuccess('');
-
+const formatLocalDate = (date) => {
+  const offsetDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+  return offsetDate.toISOString().split('T')[0];
+};
     const payload = {
       first_name: data.first_name,
       last_name: data.last_name,
       wheels: parseInt(data.wheels),
       vehicle_type_id: parseInt(data.vehicle_type_id),
       vehicle_id: parseInt(data.vehicle_id),
-      start_date: startDate,
-      end_date: endDate,
+      start_date: formatLocalDate(startDate),
+  end_date: formatLocalDate(endDate),
     };
 
     try {
-      await axios.post('http://localhost:5000/bookings', payload);
+      await axios.post('http://localhost:5000/book', payload);
       setSuccess('✅ Booking successful!');
       resetForm();
     } catch (err) {
-      const msg = err?.response?.data?.message || 'Something went wrong';
+      const msg = err?.response?.data?.error
+      // || 'Something went wrong';
       setError(`❌ ${msg}`);
     }
   };
 
   return (
-    <Box p={3}>
-      <Typography variant="h6" mb={2}>Select Booking Date Range</Typography>
+    <Grid container justifyContent="center" mt={8}>
+      <Grid item xs={11} sm={8} md={6} lg={4}>
+        <Paper elevation={3} sx={{ padding: 4, borderRadius: 3 }}>
+          <Typography variant="h5" fontWeight="bold" gutterBottom>
+            Select Booking Date Range
+          </Typography>
 
-      <Box display="flex" flexDirection="column" gap={2}>
-        <DatePicker
-          selected={startDate}
-          onChange={(date) => setStartDate(date)}
-          selectsStart
-          startDate={startDate}
-          endDate={endDate}
-          placeholderText="Start Date"
-        />
-        <DatePicker
-          selected={endDate}
-          onChange={(date) => setEndDate(date)}
-          selectsEnd
-          startDate={startDate}
-          endDate={endDate}
-          minDate={startDate}
-          placeholderText="End Date"
-        />
-      </Box>
+          <Box display="flex" flexDirection="column" gap={3} mt={2}>
+            <DatePicker
+              selected={startDate}
+              onChange={(date) => setStartDate(date)}
+              selectsStart
+              startDate={startDate}
+              endDate={endDate}
+              minDate={new Date()}
+              maxDate={endDate}
+              placeholderText="Start Date"
+              className="custom-datepicker"
+            />
 
-      {error && <FormHelperText error sx={{ mt: 2 }}>{error}</FormHelperText>}
-      {success && <FormHelperText sx={{ mt: 2 }} style={{ color: 'green' }}>{success}</FormHelperText>}
+            <DatePicker
+              selected={endDate}
+              onChange={(date) => setEndDate(date)}
+              selectsEnd
+              startDate={startDate}
+              endDate={endDate}
+              minDate={startDate}
+              placeholderText="End Date"
+              className="custom-datepicker"
+            />
 
-      <Box mt={3}>
-        <Button onClick={prevStep} sx={{ mr: 2 }}>Back</Button>
-        <Button variant="contained" onClick={handleSubmit}>Submit Booking</Button>
-      </Box>
-    </Box>
+            {error && (
+              <FormHelperText error sx={{ mt: -1 }}>
+                {error}
+              </FormHelperText>
+            )}
+            {success && (
+              <FormHelperText sx={{ color: 'green', mt: -1 }}>
+                {success}
+              </FormHelperText>
+            )}
+
+            <Box display="flex" justifyContent="space-between" mt={2}>
+              <Button onClick={prevStep} variant="outlined">
+                Back
+              </Button>
+              <Button variant="contained" onClick={handleSubmit}>
+                Submit Booking
+              </Button>
+            </Box>
+          </Box>
+        </Paper>
+      </Grid>
+    </Grid>
   );
 };
 
